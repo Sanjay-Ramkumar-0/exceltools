@@ -1,0 +1,12 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+exceltools/__init__.py
+exceltools/main.py
+exceltools.egg-info/PKG-INFO
+exceltools.egg-info/SOURCES.txt
+exceltools.egg-info/dependency_links.txt
+exceltools.egg-info/requires.txt
+exceltools.egg-info/top_level.txt
+tests/test_main.py

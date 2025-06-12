@@ -1,0 +1,408 @@
+Metadata-Version: 2.4
+Name: exceltools
+Version: 0.1.0
+Summary: A Python package to simplify working with Excel files using openpyxl
+Home-page: https://github.com/Sanjay-Ramkumar-0/exceltools
+Author: Sanjay Ramkumar
+Author-email: ss.ramsanjay@gmail.com
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openpyxl
+Requires-Dist: tabulate
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+ExcelTools
+A Python package to simplify working with Excel files using openpyxl. exceltools provides an intuitive ExcelFile class to create, manipulate, and analyze Excel files with ease. It supports operations like creating sheets, editing cells, performing calculations, and removing rows or columns.
+Installation
+Install exceltools via pip:
+pip install exceltools
+
+Requirements
+
+Python 3.8 or higher
+openpyxl>=3.0.10
+tabulate>=0.9.0
+
+Usage
+The ExcelFile class is the core of the package. Below is a quick example to get started:
+from exceltools.main import ExcelFile
+
+# Create a new Excel file
+excel = ExcelFile().create_excel("example.xlsx")
+
+# Set values
+excel.set_value(1, 1, "Name")
+excel.set_value(1, 2, "Age")
+excel.set_value(2, 1, "Alice")
+excel.set_value(2, 2, 25)
+
+# Display the sheet
+excel.display()
+
+# Save the file
+excel.save()
+
+ExcelFile Class Methods
+The ExcelFile class provides methods to manage Excel files, sheets, and cell data. Below is a detailed explanation of each method, including examples.
+1. __init__()
+Initializes a new ExcelFile instance with an empty workbook and an active sheet.
+Example:
+excel = ExcelFile()  # Creates a new workbook in memory
+
+2. create_excel(name)
+Creates a new Excel file with the specified name and saves it to disk. Automatically adds .xlsx if not provided.
+Parameters:
+
+name (str): File name (e.g., "myfile.xlsx").
+
+Returns: ExcelFile instance for method chaining.
+Example:
+excel = ExcelFile().create_excel("data.xlsx")  # Creates data.xlsx
+print(excel.get_location())  # Prints absolute path to data.xlsx
+
+3. save()
+Saves the workbook to the file path specified in file_path.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "Hello")
+excel.save()  # Saves changes to test.xlsx
+
+4. save_as(new_path)
+Saves the workbook to a new file path. Automatically adds .xlsx if not provided.
+Parameters:
+
+new_path (str): New file path.
+
+Example:
+excel = ExcelFile().create_excel("original.xlsx")
+excel.save_as("backup.xlsx")  # Saves as backup.xlsx
+
+5. rename_file(new_name)
+Renames the Excel file on disk. Automatically adds .xlsx if not provided.
+Parameters:
+
+new_name (str): New file name.
+
+Example:
+excel = ExcelFile().create_excel("old.xlsx")
+excel.rename_file("new.xlsx")  # Renames to new.xlsx
+print(excel.get_location())  # Shows updated path
+
+6. rename(old_sheet, new_sheet)
+Renames a sheet in the workbook.
+Parameters:
+
+old_sheet (str): Current sheet name.
+new_sheet (str): New sheet name.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.rename("Sheet", "Data")  # Renames default sheet to "Data"
+print(excel.list_sheets())  # ['Data']
+
+7. add_sheet(title)
+Adds a new sheet to the workbook.
+Parameters:
+
+title (str): Sheet name.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.add_sheet("Summary")
+print(excel.list_sheets())  # ['Sheet', 'Summary']
+
+8. delete_sheet(name)
+Deletes a sheet from the workbook.
+Parameters:
+
+name (str): Sheet name to delete.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.add_sheet("Temp")
+excel.delete_sheet("Temp")
+print(excel.list_sheets())  # ['Sheet']
+
+9. sheet_exists(name)
+Checks if a sheet exists in the workbook.
+Parameters:
+
+name (str): Sheet name.
+
+Returns: bool (True if sheet exists, False otherwise).
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+print(excel.sheet_exists("Sheet"))  # True
+print(excel.sheet_exists("Data"))   # False
+
+10. list_sheets()
+Returns a list of all sheet names in the workbook.
+Returns: list of sheet names.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.add_sheet("Data")
+print(excel.list_sheets())  # ['Sheet', 'Data']
+
+11. set_active(name)
+Sets the specified sheet as the active sheet for operations.
+Parameters:
+
+name (str): Sheet name.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.add_sheet("Data")
+excel.set_active("Data")
+excel.set_value(1, 1, "Test")  # Writes to "Data" sheet
+
+12. set_location(path)
+Sets the file path for the Excel file without saving.
+Parameters:
+
+path (str): File path.
+
+Example:
+excel = ExcelFile()
+excel.set_location("newfile.xlsx")
+excel.save()  # Saves to newfile.xlsx
+
+13. get_location()
+Returns the absolute file path of the Excel file.
+Returns: str (file path) or None if not set.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+print(excel.get_location())  # Prints absolute path
+
+14. set_value(row, column, value)
+Sets the value of a cell at the specified row and column.
+Parameters:
+
+row (int): 1-based row index.
+column (int): 1-based column index.
+value: Value to set (e.g., str, int, float).
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "Name")
+excel.set_value(2, 1, "Bob")
+excel.display()
+
+15. get_value(row, column)
+Gets the value of a cell at the specified row and column.
+Parameters:
+
+row (int): 1-based row index.
+column (int): 1-based column index.
+
+Returns: Cell value or None if empty.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "Test")
+print(excel.get_value(1, 1))  # Test
+
+16. replace(row, column, old, new)
+Replaces a cellâ€™s value if it matches the old value.
+Parameters:
+
+row (int): 1-based row index.
+column (int): 1-based column index.
+old: Value to replace.
+new: New value.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "Old")
+excel.replace(1, 1, "Old", "New")
+print(excel.get_value(1, 1))  # New
+
+17. replace_all(old, new)
+Replaces all occurrences of a value in the active sheet.
+Parameters:
+
+old: Value to replace.
+new: New value.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "X")
+excel.set_value(2, 1, "X")
+excel.replace_all("X", "Y")
+excel.display()  # Shows "Y" in both cells
+
+18. clear_cell(row, column)
+Clears the value of a cell.
+Parameters:
+
+row (int): 1-based row index.
+column (int): 1-based column index.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "Data")
+excel.clear_cell(1, 1)
+print(excel.get_value(1, 1))  # None
+
+19. get_row(row_num)
+Returns a list of values in the specified row.
+Parameters:
+
+row_num (int): 1-based row index.
+
+Returns: list of cell values.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "A")
+excel.set_value(1, 2, "B")
+print(excel.get_row(1))  # ['A', 'B']
+
+20. get_column(col_num)
+Returns a list of values in the specified column.
+Parameters:
+
+col_num (int): 1-based column index.
+
+Returns: list of cell values.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "X")
+excel.set_value(2, 1, "Y")
+print(excel.get_column(1))  # ['X', 'Y']
+
+21. mean(*, row=None, column=None)
+Calculates the mean of numeric values in a row or column.
+Parameters:
+
+row (int, optional): 1-based row index.
+column (int, optional): 1-based column index.
+
+Returns: float (mean) or 0.0 if no numeric values.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, 10)
+excel.set_value(1, 2, 20)
+print(excel.mean(row=1))  # 15.0
+
+22. sum(*, row=None, column=None)
+Calculates the sum of numeric values in a row or column.
+Parameters:
+
+row (int, optional): 1-based row index.
+column (int, optional): 1-based column index.
+
+Returns: float (sum).
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, 5)
+excel.set_value(1, 2, 10)
+print(excel.sum(row=1))  # 15
+
+23. max(*, row=None, column=None)
+Returns the maximum numeric value in a row or column.
+Parameters:
+
+row (int, optional): 1-based row index.
+column (int, optional): 1-based column index.
+
+Returns: float or None if no numeric values.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, 5)
+excel.set_value(1, 2, 15)
+print(excel.max(row=1))  # 15
+
+24. min(*, row=None, column=None)
+Returns the minimum numeric value in a row or column.
+Parameters:
+
+row (int, optional): 1-based row index.
+column (int, optional): 1-based column index.
+
+Returns: float or None if no numeric values.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, 5)
+excel.set_value(1, 2, 15)
+print(excel.min(row=1))  # 5
+
+25. count(value)
+Counts occurrences of a value in the active sheet.
+Parameters:
+
+value: Value to count.
+
+Returns: int (number of occurrences).
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "X")
+excel.set_value(2, 1, "X")
+print(excel.count("X"))  # 2
+
+26. get_dimensions()
+Returns the dimensions of the active sheet (rows, columns).
+Returns: tuple (max_row, max_column).
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(2, 3, "Data")
+print(excel.get_dimensions())  # (2, 3)
+
+27. display()
+Prints the active sheet as a formatted table using tabulate.
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "A")
+excel.set_value(1, 2, "B")
+excel.display()  # Prints a grid table
+
+28. remove_column(column)
+Removes the specified column from the active sheet.
+Parameters:
+
+column (int): 1-based column index.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "A")
+excel.set_value(1, 2, "B")
+excel.remove_column(1)  # Removes column A
+excel.display()  # Shows only column B
+
+29. remove_row(row)
+Removes the specified row from the active sheet.
+Parameters:
+
+row (int): 1-based row index.
+
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+excel.set_value(1, 1, "A")
+excel.set_value(2, 1, "B")
+excel.remove_row(1)  # Removes row 1
+excel.display()  # Shows only row with "B"
+
+30. __repr__()
+Returns a string representation of the ExcelFile instance.
+Returns: str (e.g., <ExcelFile at 'path/to/file.xlsx'>).
+Example:
+excel = ExcelFile().create_excel("test.xlsx")
+print(excel)  # <ExcelFile at '/absolute/path/test.xlsx'>
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+Contact
+For questions or feedback, contact Sanjay Ramkumar at ss.ramsanjay@gmail.com.
